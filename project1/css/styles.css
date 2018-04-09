@@ -378,6 +378,28 @@ nav h1 a {
   #restaurants-list li {
     width: 750px;
   }
+  .filter-options {
+    height: 15rem;
+  }
+  .filter-options h2 {
+    display: flex;
+    font-size: 2rem;
+    justify-content: center;
+  }
+  .filter-options select {
+    width: 30rem;
+    text-align-last: center;
+    display: flex;
+    flex-direction: row;
+    margin: auto;
+    /* margin-top: 2rem; */
+  }
+  #neighborhoods-select,
+  #cuisines-select {
+    margin-top: 0.5rem;
+    font-size: 1.5rem;
+    height: 5rem;
+  }
 }
 
 @media (min-width: 1041px) {
