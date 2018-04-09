@@ -373,7 +373,33 @@ nav h1 a {
   }
 }
 
+@media screen and (max-width: 1040px) {
+  /* Restaurants Page */
+  #main-content {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .inside #map-container {
+    /* display: none !important; */
+    position: absolute;
+    height: 20%;
+    width: 100%;
+  }
+  section#restaurant-container {
+    top: 25rem;
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    width: 100%;
+  }
+}
+
 @media screen and (min-width: 830px) and (max-width: 1040px) {
+  /* Home Page */
+  nav h1 a {
+    font-size: 3rem;
+  }
   #reviews-list li,
   #restaurants-list li {
     width: 750px;
@@ -400,9 +426,11 @@ nav h1 a {
     font-size: 1.5rem;
     height: 5rem;
   }
+  /* Restaurants Page */
 }
 
 @media (min-width: 1041px) {
+  /* Home Page */
   #restaurants-list ul {
     display: flex;
     flex-wrap: wrap;
