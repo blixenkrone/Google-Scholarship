@@ -393,6 +393,11 @@ nav h1 a {
     flex-direction: column;
     width: 100%;
   }
+  #breadcrumb,
+  #breadcrumb li {
+    width: 100%;
+    font-size: 2rem;
+  }
 }
 
 @media screen and (min-width: 830px) and (max-width: 1040px) {
