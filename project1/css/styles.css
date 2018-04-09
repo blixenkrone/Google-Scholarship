@@ -379,6 +379,10 @@ nav h1 a {
     display: flex;
     flex-wrap: wrap;
   }
+  h1#restaurant-name {
+    margin: 4rem;
+    font-size: 3rem;
+  }
   .inside #map-container {
     /* display: none !important; */
     position: absolute;
