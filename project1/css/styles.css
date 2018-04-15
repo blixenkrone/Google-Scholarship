@@ -417,6 +417,10 @@ nav h1 a {
     width: 100%;
     font-size: 3rem;
   }
+  .inside #footer {
+    width: -webkit-fill-available;
+    font-size: 1rem;
+  }
 }
 
 @media screen and (min-width: 200px) and (max-width: 1040px) {
