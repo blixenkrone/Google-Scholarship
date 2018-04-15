@@ -363,19 +363,11 @@ nav h1 a {
   color: #666;
 }
 
-@media screen and (min-width: 400px) and (max-width: 990px) {
-  #reviews-list li,
-  #restaurants-list li {}
-  #restaurants-list li a,
-  #restaurants-list li h1,
-  #restaurants-list li p {
-    font-size: 2rem;
-  }
-}
+/* Restaurants Page */
 
 @media screen and (max-width: 1040px) {
   /* Restaurants Page */
-  #main-content {
+  #restaurant-maincontent {
     display: flex;
     flex-wrap: wrap;
   }
@@ -384,34 +376,66 @@ nav h1 a {
     font-size: 3rem;
   }
   .inside #map-container {
-    /* display: none !important; */
     position: absolute;
-    height: 20%;
+    height: 15%;
     width: 100%;
   }
   section#restaurant-container {
-    top: 25rem;
+    padding: 6rem;
+    top: 50rem;
     position: relative;
     display: flex;
     flex-wrap: wrap;
     flex-direction: column;
-    width: 100%;
+    width: 70rem;
+  }
+  section#reviews-container {
+    margin-top: 35rem;
+  }
+  table#restaurant-hours td {
+    font-size: 2rem;
+  }
+  #reviews-container h2 {
+    display: none;
+  }
+  p#restaurant-cuisine {
+    font-size: 4rem;
+  }
+  p#restaurant-address {
+    font-size: 3rem;
+    margin-top: 4rem;
+  }
+  #reviews-list {
+    margin: 4rem;
+    margin-top: 20rem;
+  }
+  #reviews-list li {
+    width: 50%;
   }
   #breadcrumb,
   #breadcrumb li {
     width: 100%;
-    font-size: 2rem;
+    font-size: 3rem;
   }
 }
 
-@media screen and (min-width: 830px) and (max-width: 1040px) {
+@media screen and (min-width: 200px) and (max-width: 1040px) {
   /* Home Page */
   nav h1 a {
     font-size: 3rem;
   }
   #reviews-list li,
   #restaurants-list li {
-    width: 750px;
+    width: 40rem;
+    border-radius: 2rem;
+    padding: 4rem;
+  }
+  #reviews-list li p {
+    font-size: 2rem;
+  }
+  #reviews-list li p:nth-child(-n+3) {
+    font-size: 2.5rem;
+    color: orange;
   }
   .filter-options {
     height: 15rem;
@@ -435,7 +459,6 @@ nav h1 a {
     font-size: 1.5rem;
     height: 5rem;
   }
-  /* Restaurants Page */
 }
 
 @media (min-width: 1041px) {
