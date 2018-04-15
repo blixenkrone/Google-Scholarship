@@ -417,9 +417,11 @@ nav h1 a {
     width: 100%;
     font-size: 3rem;
   }
-  .inside #footer {
+  .inside #footer,
+  footer#footer {
     width: -webkit-fill-available;
-    font-size: 1rem;
+    font-size: 1.5rem;
+    padding-top: 2rem;
   }
 }
 
@@ -433,6 +435,12 @@ nav h1 a {
     width: 40rem;
     border-radius: 2rem;
     padding: 4rem;
+    background-color: #eeeeee;
+  }
+  ul#restaurants-list h1,
+  ul#restaurants-list p,
+  ul#restaurants-list a {
+    font-size: 2rem;
   }
   #reviews-list li p {
     font-size: 2rem;
