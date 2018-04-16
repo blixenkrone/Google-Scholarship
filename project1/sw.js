@@ -1,9 +1,9 @@
-const cacheName = 'v5';
-const cacheFiles = [
+const cacheVersion = 'v6';
+const cacheData = [
     './',
+    'sw.js',
     './index.html',
     './restaurant.html',
-    'sw.js',
     './data/restaurants.json',
     './css/styles.css',
     './js/dbhelper.js',
@@ -34,85 +34,61 @@ const cacheFiles = [
 
 
 //installing the service worker
-self.addEventListener("install", function (event) {
-    console.log("Service Worker Installed");
-
-    //install event is going to wait until the waitUntil promise is completed
+self.addEventListener('install', (event) => {
+    console.log('Service Worker Installed');
     event.waitUntil(
-        caches.open(cacheName).then(function (cache) {
-            console.log(cacheFiles);
-            return cache.addAll(cacheFiles);
+        caches.open(cacheVersion).then((cache) => {
+            console.log(cacheData);
+            return cache.addAll(cacheData);
         }).catch(error => console.log(error))
     );
-
 });
 
 //activating the service worker
 self.addEventListener('activate', (event) => {
-    console.log("Service Worker Activated");
-
-    //we're now going to remove everything in cache that doesn't correspond the current cacheName
+    console.log('Service Worker Activated');
     event.waitUntil(
-        //going throught all the keys in cache
-        caches.keys().then(function (cacheNames) {
+        caches.keys().then((cacheVersions) => {
             //looping through everything in the cache
-            return Promise.all(cacheNames.map(function (thisCacheName) {
+            return Promise.all(cacheVersions.map((thiscacheVersion) => {
 
-                //if thisCacheName doesn't correcpond to the current cacheName
-                if (thisCacheName !== cacheName) {
-                    console.log("Removing the old cache");
+                if (thiscacheVersion !== cacheVersion) {
+                    console.log('Removing the old cache');
 
-                    //remove thisCacheName
-                    return caches.delete(thisCacheName);
+                    return caches.delete(thiscacheVersion);
                 }
             }))
         }).catch(error => console.log(error))
     );
 });
 
-//fetching
-self.addEventListener('fetch', function (event) {
-    console.log("Fetch event");
-
-    // event.respondWidth Responds to the fetch event
+self.addEventListener('fetch', (event) => {
     event.respondWith(
-        // Check in cache for the request being made
         caches.match(event.request)
-        .then(function (response) {
+        .then((response) => {
 
-            // If the request is in the cache
             if (response) {
-                console.log(response);
                 return response;
             }
 
-            // If the request is NOT in the cache, fetch and cache
+            // Request not in cache?
             let clone = event.request.clone();
             //fetch and cache
             fetch(clone)
-                .then(function (response) {
+                .then((response) => {
                     if (!response) {
-                        console.log("No response from fetch!")
+                        console.log(response)
                         return response;
                     }
 
                     let responseClone = response.clone();
-
-                    //  Open the cache
-                    caches.open(cacheName).then(function (cache) {
-
-                        // Put the fetched response in the cache
+                    caches.open(cacheVersion).then((cache) => {
                         cache.put(event.request, responseClone);
-                        console.log("New Service worker data cached");
-
-                        // Return the response
+                        console.log(event);
                         return response;
-
-                    }); // end caches.open
+                    });
                 })
-                .catch(function (err) {
-                    console.log("Error Fetching and Caching new data!", err);
-                });
-        }) // end caches.match(event.request)
-    ); // end event.respondWith
+                .catch(error => console.log(error));
+        })
+    );
 });
