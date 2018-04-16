@@ -42,13 +42,13 @@ self.addEventListener("install", function (event) {
         caches.open(cacheName).then(function (cache) {
             console.log(cacheFiles);
             return cache.addAll(cacheFiles);
-        })
+        }).catch(error => console.log(error))
     );
 
 });
 
 //activating the service worker
-self.addEventListener("activate", function (event) {
+self.addEventListener('activate', (event) => {
     console.log("Service Worker Activated");
 
     //we're now going to remove everything in cache that doesn't correspond the current cacheName
@@ -66,7 +66,7 @@ self.addEventListener("activate", function (event) {
                     return caches.delete(thisCacheName);
                 }
             }))
-        })
+        }).catch(error => console.log(error))
     );
 });
 
@@ -82,7 +82,7 @@ self.addEventListener('fetch', function (event) {
 
             // If the request is in the cache
             if (response) {
-                console.log("Something is in cache");
+                console.log(response);
                 return response;
             }
 
