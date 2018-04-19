@@ -5,7 +5,6 @@ var map
 var markers = []
 
 
-//checing if there is service worker registered, if not we'll register it
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker
     .register('./sw.js', {
