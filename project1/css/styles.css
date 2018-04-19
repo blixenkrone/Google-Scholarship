@@ -266,7 +266,8 @@ nav h1 a {
   position: fixed;
   right: 0;
   top: 80px;
-  width: 50%;
+  width: calc(100% - 36rem);
+  height: 100%;
 }
 
 .inside #map {
@@ -279,6 +280,7 @@ nav h1 a {
   bottom: 0;
   position: absolute;
   width: 50%;
+  width: 33rem;
 }
 
 #restaurant-name {
@@ -432,7 +434,7 @@ nav h1 a {
     font-size: 3rem;
   }
   #reviews-list li {
-    width: 40rem;
+    width: 25rem;
   }
   #restaurants-list li {
     border-radius: 2rem;
