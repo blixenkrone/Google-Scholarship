@@ -4,19 +4,12 @@
 
 class DBHelper {
 
-  constructor(port, apiUrl, options) {
-    this.port = port
-    this.apiUrl = apiUrl
-    this.options = options
-    getDATA(apiUrl)
-  }
-
-  static getDATA(apiUrl, req, res) {
+  static getDATA(fetchApi, callback) {
     const port = 1337;
-    let apiUrl = 'http://localhost:';
+    let apiUrl = `http://localhost:`;
     let options;
 
-    switch (apiUrl) {
+    switch (fetchApi) {
       case 'restaurants':
         apiUrl = `${apiUrl}${port}/restaurants`
         options = {
@@ -34,7 +27,7 @@ class DBHelper {
 
     fetch(apiUrl, options)
       .then(response => {
-        console.log(`${apiUrl} fetched`)
+        console.log(`${apiUrl} fetched with ${options} options!`)
 
         const content = response.headers.get('content-type')
         if (content && content.indexOf('application/json') !== -1) {
@@ -42,7 +35,7 @@ class DBHelper {
         } else {
           return 'API call successfull'
         }
-      })
+      }, error => console.log(error))
       .then((data) => {
         callback(data)
       })
@@ -60,8 +53,7 @@ class DBHelper {
     });
 
     if (mode) {
-      dbPromise
-        .then(db => {
+      dbPromise.then(db => {
           console.log(db)
           let tx = db.transaction('restaurants');
           let store = tx.objectStore('restaurants');
@@ -71,15 +63,16 @@ class DBHelper {
           // if (restaurants.length > 0) {
           console.log('indexDB got: ' + restaurants);
           callback(null, restaurants);
-          if (mode === 'restaurantById' || mode === 'restaurantByCuisineAndNeighborhood') {
-            DBHelper.getAPIData('restaurants', (restaurants) => {
+          console.log('here')
+          // if (mode === 'restaurantById' || mode === 'fetchRestaurantByCuisineAndNeighborhood') {
+          DBHelper.getDATA('restaurants', (restaurants) => {
+            console.log(restaurants)
+            const worker = new Worker('js/idb-worker.js');
+            worker.postMessage(restaurants);
+            worker.onmessage = (e) => console.log(e.data);
 
-              const worker = new Worker('js/idb-worker.js');
-              worker.postMessage(restaurants);
-              worker.onmessage = (e) => console.log(e.data);
-
-            });
-          }
+          });
+          // }
 
           // } else {
           //   console.log('No restaurants was found :-(')
