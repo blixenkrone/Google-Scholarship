@@ -38,7 +38,7 @@ self.addEventListener('install', (event) => {
     console.log('Service Worker Installed');
     event.waitUntil(
         caches.open(cacheVersion).then((cache) => {
-            console.log(cacheData);
+            // console.log(cacheData);
             return cache.addAll(cacheData);
         }).catch(error => console.log(error))
     );
@@ -84,7 +84,7 @@ self.addEventListener('fetch', (event) => {
                     let responseClone = response.clone();
                     caches.open(cacheVersion).then((cache) => {
                         cache.put(event.request, responseClone);
-                        console.log(event);
+                        // console.log(event);
                         return response;
                     });
                 })

@@ -6,6 +6,7 @@
 
 - Clone git repo
 - npm install
+- run cmd $ gulp dist
 - run python simpleserver
 
 
