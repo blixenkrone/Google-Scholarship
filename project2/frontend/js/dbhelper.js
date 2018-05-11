@@ -60,24 +60,23 @@ class DBHelper {
           return store.getAll();
         })
         .then(restaurants => {
-          // if (restaurants.length > 0) {
-          console.log('indexDB got: ' + restaurants);
-          callback(null, restaurants);
-          console.log('here')
-          // if (mode === 'restaurantById' || mode === 'fetchRestaurantByCuisineAndNeighborhood') {
-          DBHelper.getDATA('restaurants', (restaurants) => {
-            console.log(restaurants)
-            const worker = new Worker('js/idb-worker.js');
-            worker.postMessage(restaurants);
-            worker.onmessage = (e) => console.log(e.data);
+          if (restaurants && restaurants.length > 0) {
+            console.log('indexDB got: ' + restaurants);
+            callback(null, restaurants);
+            if (mode === 'restaurantById' || mode === 'fetchRestaurantByCuisineAndNeighborhood') {
+              DBHelper.getDATA('restaurants', (restaurants) => {
+                console.log(restaurants)
+                const worker = new Worker('js/idb-worker.js');
+                worker.postMessage(restaurants);
+                worker.onmessage = (e) => console.log(e.data);
 
-          });
-          // }
+              });
+            }
 
-          // } else {
-          //   console.log('No restaurants was found :-(')
-          //   callback(null, restaurants)
-          // }
+          } else {
+            console.log('No restaurants was found :-(')
+            callback(null, restaurants)
+          }
         })
     }
 
@@ -235,7 +234,7 @@ class DBHelper {
    * Restaurant image URL.
    */
   static imageUrlForRestaurant(restaurant) {
-    return (`/imgs/${restaurant.photograph}`)
+    return (`/imgs/${restaurant.photograph}.jpg`)
   }
 
   /**
