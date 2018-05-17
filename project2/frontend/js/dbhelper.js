@@ -60,8 +60,8 @@ class DBHelper {
           return store.getAll();
         })
         .then(restaurants => {
-          if (restaurants && restaurants.length > 0) {
-            console.log('indexDB got: ' + restaurants);
+          if (restaurants) {
+            console.log('indexDB got data!');
             callback(null, restaurants);
             if (mode === 'restaurantById' || mode === 'fetchRestaurantByCuisineAndNeighborhood') {
               DBHelper.getDATA('restaurants', (restaurants) => {
@@ -121,10 +121,10 @@ class DBHelper {
   static fetchRestaurantById(id, callback) {
     // fetch all restaurants with proper error handling.
     DBHelper.fetchData('restaurantById', (error, restaurants) => {
+      const restaurant = restaurants.find(r => r.id == id)
       if (error) {
         callback(error, null)
       } else {
-        const restaurant = restaurants.find(r => r.id == id)
         if (restaurant) { // Got the restaurant
           callback(null, restaurant)
         } else { // Restaurant does not exist in the database
