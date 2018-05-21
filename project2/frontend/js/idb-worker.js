@@ -1,4 +1,4 @@
-importScripts('idb.js');
+importScripts('./idb.js');
 
 onmessage = (e) => {
 

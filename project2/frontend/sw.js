@@ -40,8 +40,8 @@ self.addEventListener('install', (event) => {
         caches.open(cacheVersion).then((cache) => {
             // console.log(cacheData);
             return cache.addAll(cacheData);
-        }).catch(error => console.log(error))
-    );
+        }).catch(err => console.log(err))
+    )
 });
 
 //activating the service worker
@@ -63,32 +63,11 @@ self.addEventListener('activate', (event) => {
 });
 
 self.addEventListener('fetch', (event) => {
+
     event.respondWith(
-        caches.match(event.request)
-        .then((response) => {
-
-            if (response) {
-                return response;
-            }
-
-            // Request not in cache?
-            let clone = event.request.clone();
-            //fetch and cache
-            fetch(clone)
-                .then((response) => {
-                    if (!response) {
-                        console.log(response)
-                        return response;
-                    }
-
-                    let responseClone = response.clone();
-                    caches.open(cacheVersion).then((cache) => {
-                        cache.put(event.request, responseClone);
-                        // console.log(event);
-                        return response;
-                    });
-                })
-                .catch(error => console.log(error));
-        })
+        caches.match(event.request).then((response) => {
+            if (response) return response;
+            return fetch(event.request);
+        }).catch(err => console.log(err))
     );
 });
