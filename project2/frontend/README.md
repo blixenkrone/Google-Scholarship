@@ -6,7 +6,9 @@
 
 - Clone git repo
 - npm install
-- run cmd $ gulp dist
+- run cmd: 
+   ## $ gulp dist
+   ## $ grunt responsive_images
 - run python simpleserver
 
 

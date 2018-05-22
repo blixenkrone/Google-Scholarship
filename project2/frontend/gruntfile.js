@@ -15,14 +15,14 @@ module.exports = (grunt) => {
           engine: 'im',
           sizes: [{
             size: 'small',
-            width: 320,
+            width: 540,
             quality: 80
           }]
         },
         files: [{
           expand: true,
           src: ['img-source/*.{gif,jpg,png}'],
-          custom_dest: 'imgs'
+          custom_dest: 'dist/imgs'
           // cwd: '/src/assets/images_src',
         }]
       }
