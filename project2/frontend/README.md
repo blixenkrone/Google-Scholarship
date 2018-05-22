@@ -7,8 +7,9 @@
 - Clone git repo
 - npm install
 - run cmd: 
-   ## $ gulp dist --prod
-   ## $ grunt responsive_images
+   ### $ gulp dist --prod
+   ### $ grunt responsive_images
 - run python simpleserver
 
-
+## Notes:
+- Included the audit-result.json
