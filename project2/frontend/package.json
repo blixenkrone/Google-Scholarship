@@ -11,10 +11,13 @@
   "dependencies": {
     "eslint": "^4.19.1",
     "express": "^4.16.3",
+    "grunt-cli": "^1.2.0",
     "grunt-mkdir": "^1.0.0",
     "grunt-responsive-images": "^1.10.1",
+    "gulp-cli": "^2.0.1",
     "jshint": "^2.9.5",
-    "nodemon": "^1.17.3"
+    "nodemon": "^1.17.3",
+    "sails": "^1.0.2"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",
