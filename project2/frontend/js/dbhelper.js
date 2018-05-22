@@ -57,8 +57,7 @@ class DBHelper {
       .catch(err => {
         console.log(err)
         // Fetch from indexdb incase network is not available
-        DBHelper.fetchRestaurantsFromClient(callback)
-          .then(callback => console.log(callback))
+        DBHelper.fetchRestaurantsFromClient(callback);
       })
   }
 

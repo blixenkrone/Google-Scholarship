@@ -13,4 +13,4 @@
 - run python simpleserver or serve another localhost
 
 ## Notes:
-- Included the audit-result.json and img.
+- Included the audit-result.json scores.
