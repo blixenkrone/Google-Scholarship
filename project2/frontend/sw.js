@@ -6,20 +6,8 @@ const cacheData = [
     './restaurant.html',
     './data/restaurants.json',
     './css/styles.css',
-    './js/dbhelper.js',
-    './js/main.js',
-    './js/restaurant_info.js',
-    './js/app.js',
-    'imgs/1.jpg',
-    'imgs/2.jpg',
-    'imgs/3.jpg',
-    'imgs/4.jpg',
-    'imgs/5.jpg',
-    'imgs/6.jpg',
-    'imgs/7.jpg',
-    'imgs/8.jpg',
-    'imgs/9.jpg',
-    'imgs/10.jpg',
+    './js/**.js',
+    'imgs/**.jpg',
     './restaurant.html?id=1',
     './restaurant.html?id=2',
     './restaurant.html?id=3',
@@ -40,6 +28,7 @@ self.addEventListener('install', (event) => {
         .then((cache) => {
             return cache.addAll(cacheData);
         })
+        .catch(err => console.log(err))
     )
 });
 
@@ -57,7 +46,7 @@ self.addEventListener('activate', (event) => {
                     return caches.delete(thiscacheVersion);
                 }
             }))
-        }).catch(error => console.log(error))
+        })
     );
 });
 
@@ -71,9 +60,9 @@ self.addEventListener('fetch', (event) => {
                     const responseClone = response.clone();
                     caches.open(cacheVersion)
                         .then(cache => cache.put(event.request, responseClone))
-                        .catch(err => console.log(err))
                     return response;
                 })
-        }).catch(err => console.log(err))
+        })
+        .catch(err => console.log(err))
     );
 });

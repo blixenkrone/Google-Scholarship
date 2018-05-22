@@ -108,13 +108,24 @@ class DBHelper {
       console.log('no db');
       return null;
     }
-    const worker = new Worker('./idb-worker.js');
-    // return DBHelper.openDB().then(db => {
-    //   return db.transaction('restaurants')
-    //     .objectStore('restaurants').get(parseInt(id));
-    // }).then(restaurant => {
-    //   return restaurant
-    // }).catch(err => console.log(err))
+    const dbPromise = idb.open('restaurants', 1, upgradeDB => {
+      const restaurantStore = upgradeDB.createObjectStore('restaurants', {
+        keyPath: 'id'
+      });
+    });
+
+    dbPromise.then(db => {
+      let tx = db.transaction('restaurants');
+      let store = tx.objectStore('restaurants').get(id);
+      return store.getAll();
+    }).then(restaurant => {
+      if (restaurant) {
+        console.log('indexDB returned this data from an ID:');
+        console.log(restaurant);
+        callback(null, restaurant);
+        console.log('fetched from local IDB done');
+      }
+    });
   }
 
   /**
