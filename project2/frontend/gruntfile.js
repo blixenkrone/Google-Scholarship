@@ -21,7 +21,7 @@ module.exports = (grunt) => {
         },
         files: [{
           expand: true,
-          src: ['img-source/*.{gif,jpg,png}'],
+          src: ['imgs/*.{gif,jpg,png}'],
           custom_dest: 'dist/imgs'
           // cwd: '/src/assets/images_src',
         }]
