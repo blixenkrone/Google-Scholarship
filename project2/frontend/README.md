@@ -9,7 +9,9 @@
 - run cmd: 
    ### $ gulp dist --prod
    ### $ grunt responsive_images
-- run python simpleserver
+- run python simpleserver or serve another localhost
 
 ## Notes:
-- Included the audit-result.json
+- Included the audit-result.json and img.
+
+<img src="/audit.png">
