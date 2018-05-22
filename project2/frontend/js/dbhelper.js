@@ -2,8 +2,6 @@
  * Common database helper functions.
  */
 
-
-
 class DBHelper {
 
   /**
@@ -44,19 +42,21 @@ class DBHelper {
    */
   static fetchRestaurants(callback) {
     console.log(`Fetching restaurants as ${DBHelper.DATABASE_URL}`)
-    fetch(DBHelper.DATABASE_URL, {
-        method: 'GET'
-      })
-      .then(res => res = res.json())
-      .then(res => this.insertRestaurantsToDB(res))
-      .then(res => callback(res))
-      .catch(err => {
-        // Fetch from indexdb incase network is not available
-        DBHelper.fetchRestaurantsFromClient();
-      })
+
+      fetch(DBHelper.DATABASE_URL, {
+          method: 'GET'
+        })
+        .then(restaurants => restaurants = restaurants.json())
+        .then(restaurants => this.insertRestaurantsToDB(restaurants))
+        .then(restaurants => callback(null, restaurants))
+        .catch(err => {
+          console.log(err)
+          // Fetch from indexdb incase network is not available
+          DBHelper.fetchRestaurantsFromClient(callback)
+        })
   }
 
-  static fetchRestaurantsFromClient() {
+  static fetchRestaurantsFromClient(callback) {
     console.log('fetching from local IDB!')
     if (!('indexedDB' in window)) {
       console.log('no db')
@@ -74,9 +74,11 @@ class DBHelper {
         return store.getAll();
       })
       .then(restaurants => {
-        if (restaurants && restaurants !== null) {
+        if (restaurants) {
           console.log('indexDB returned this data:');
           console.log(restaurants)
+          callback(null, restaurants)
+          console.log('fetched from local IDB done')
         }
       })
   }
@@ -86,7 +88,10 @@ class DBHelper {
    */
 
   static fetchRestaurantById(id, callback) {
-    fetch(`${apiUrl}${port}/restaurants/${id}`)
+    console.log(`Fetching restaurants as ${DBHelper.DATABASE_URL}`)
+    fetch(`${DBHelper.DATABASE_URL}/${id}`, {
+        method: 'GET'
+      })
       .then(response => response.json())
       .then(restaurant => callback(null, restaurant))
       .catch(err => {
@@ -115,57 +120,57 @@ class DBHelper {
   /**
    * Fetch restaurants by a cuisine type with proper error handling.
    */
+  /**
+   * Fetch restaurants by a cuisine type with proper error handling.
+   */
   static fetchRestaurantByCuisine(cuisine, callback) {
-    console.log('fetch by cuisine')
     // Fetch all restaurants  with proper error handling
-    DBHelper.fetchRestaurants(restaurants => {
+    DBHelper.fetchRestaurants((error, restaurants) => {
       if (error) {
-        callback(error, null)
+        callback(error, null);
       } else {
         // Filter restaurants to have only given cuisine type
-        const results = restaurants.filter(r => r.cuisine_type == cuisine)
-        callback(null, results)
+        const results = restaurants.filter(r => r.cuisine_type == cuisine);
+        callback(null, results);
       }
-    })
+    });
   }
 
   /**
    * Fetch restaurants by a neighborhood with proper error handling.
    */
   static fetchRestaurantByNeighborhood(neighborhood, callback) {
-    console.log('fetch by neighborhood')
     // Fetch all restaurants
-    DBHelper.fetchRestaurants(restaurants => {
+    DBHelper.fetchRestaurants((error, restaurants) => {
       if (error) {
-        callback(error, null)
+        callback(error, null);
       } else {
         // Filter restaurants to have only given neighborhood
-        const results = restaurants.filter(r => r.neighborhood == neighborhood)
-        callback(null, results)
+        const results = restaurants.filter(r => r.neighborhood == neighborhood);
+        callback(null, results);
       }
-    })
+    });
   }
 
   /**
    * Fetch restaurants by a cuisine and a neighborhood with proper error handling.
    */
   static fetchRestaurantByCuisineAndNeighborhood(cuisine, neighborhood, callback) {
-    console.log('fetch by cuisine and neighborhood')
     // Fetch all restaurants
-    DBHelper.fetchRestaurants(restaurants => {
+    DBHelper.fetchRestaurants((error, restaurants) => {
       if (error) {
-        callback(error, null)
+        callback(error, null);
       } else {
         let results = restaurants
         if (cuisine != 'all') { // filter by cuisine
-          results = results.filter(r => r.cuisine_type == cuisine)
+          results = results.filter(r => r.cuisine_type == cuisine);
         }
         if (neighborhood != 'all') { // filter by neighborhood
-          results = results.filter(r => r.neighborhood == neighborhood)
+          results = results.filter(r => r.neighborhood == neighborhood);
         }
-        callback(null, results)
+        callback(null, results);
       }
-    })
+    });
   }
 
   /**
@@ -173,17 +178,17 @@ class DBHelper {
    */
   static fetchNeighborhoods(callback) {
     // Fetch all restaurants
-    DBHelper.fetchRestaurants(restaurants => {
+    DBHelper.fetchRestaurants((error, restaurants) => {
       if (error) {
-        callback(error, null)
+        callback(error, null);
       } else {
         // Get all neighborhoods from all restaurants
         const neighborhoods = restaurants.map((v, i) => restaurants[i].neighborhood)
         // Remove duplicates from neighborhoods
         const uniqueNeighborhoods = neighborhoods.filter((v, i) => neighborhoods.indexOf(v) == i)
-        callback(null, uniqueNeighborhoods)
+        callback(null, uniqueNeighborhoods);
       }
-    })
+    });
   }
 
   /**
@@ -191,17 +196,17 @@ class DBHelper {
    */
   static fetchCuisines(callback) {
     // Fetch all restaurants
-    DBHelper.fetchRestaurants(restaurants => {
+    DBHelper.fetchRestaurants((error, restaurants) => {
       if (error) {
-        callback(error, null)
+        callback(error, null);
       } else {
         // Get all cuisines from all restaurants
         const cuisines = restaurants.map((v, i) => restaurants[i].cuisine_type)
         // Remove duplicates from cuisines
         const uniqueCuisines = cuisines.filter((v, i) => cuisines.indexOf(v) == i)
-        callback(null, uniqueCuisines)
+        callback(null, uniqueCuisines);
       }
-    })
+    });
   }
 
   /**
