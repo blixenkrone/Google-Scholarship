@@ -14,9 +14,8 @@ module.exports = (grunt) => {
         options: {
           engine: 'im',
           sizes: [{
-            size: 'medium',
-            width: 1024,
-            suffix: '_x2',
+            size: 'small',
+            width: 320,
             quality: 80
           }]
         },
@@ -42,6 +41,6 @@ module.exports = (grunt) => {
 
   grunt.loadNpmTasks('grunt-responsive-images');
   grunt.loadNpmTasks('grunt-mkdir');
-  grunt.registerTask('default', ['clean', 'mkdir', 'copy', 'responsive_images']);
+  grunt.registerTask('default', ['mkdir', 'copy', 'responsive_images']);
 
 };

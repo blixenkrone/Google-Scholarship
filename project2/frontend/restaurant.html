@@ -5,6 +5,7 @@
   <meta charset="utf-8" />
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color">
   <!-- Normalize.css for better cross-browser consistency -->
   <link rel="stylesheet" src="//normalize-css.googlecode.com/svn/trunk/normalize.css" />
   <!-- Main CSS file -->
@@ -43,7 +44,7 @@
     <section id="restaurant-container" tabindex="-1" role="application">
       <div class="container">
         <h1 id="restaurant-name" tabindex="1"></h1>
-        <img id="restaurant-img" tabindex="1">
+        <img id="restaurant-img" tabindex="1" alt="Image of restaurant">
         <p id="restaurant-cuisine" tabindex="1"></p>
         <p id="restaurant-address" tabindex="1"></p>
         <table id="restaurant-hours" tabindex="1" summary="Opening hours for a specific restaurant"></table>
@@ -68,15 +69,10 @@
   <!-- End footer -->
 
   <!-- Beginning scripts -->
-  <!-- Google Maps -->
-  <!-- <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAH3T0-Aq8o8-KPYPJbh4eI4RgP6CEGgGM&callback=initMap"
-    type="text/javascript"></script> -->
-  <!-- Database helpers -->
   <script type="text/javascript" src="js/idb.js"></script>
   <script type="text/javascript" src="js/dbhelper.js"></script>
   <script type="text/javascript" src="js/restaurant_info.js"></script>
   <script async defer src="https://maps.googleapis.com/maps/api/js?libraries=places&callback=initMap"></script>
-  <!-- Main javascript file -->
   <!-- End scripts -->
 
 </body>

@@ -11,6 +11,8 @@
   "dependencies": {
     "eslint": "^4.19.1",
     "express": "^4.16.3",
+    "grunt-mkdir": "^1.0.0",
+    "grunt-responsive-images": "^1.10.1",
     "jshint": "^2.9.5",
     "nodemon": "^1.17.3"
   },
