@@ -6,36 +6,8 @@
 
 class DBHelper {
 
-  static getDATA(fetchApi, callback) {
-    const port = 1337;
-    let apiUrl = `http://localhost:`;
-    let options;
-    fetch(apiUrl)
-      .then(response => {
-        console.log(`${apiUrl} fetched !`)
-
-        const content = response.headers.get('content-type')
-        if (content && content.indexOf('application/json') !== -1) {
-          return response.json()
-        } else {
-          return 'API call successfull'
-        }
-      }, error => console.log(error))
-      .then((data) => {
-        callback(data)
-      })
-      .catch(error => console.error(error))
-
-  }
-
-
   /**
-   * Database URL.
-   * Change this to restaurants.json file location on your server.
-   */
-
-
-
+   * Database URL.*/
 
   static get DATABASE_URL() {
     const port = 1337 // Change this to your server port
@@ -44,31 +16,28 @@ class DBHelper {
 
   static insertRestaurantsToDB(restaurants) {
     // If db exists or create one
-    console.log('iserting to db' + restaurants);
+    console.log('inserting to db');
+    console.log(restaurants);
 
-    // const dbPromise = idb.open('restaurants', 1, (upgradeDB) => {
-    //   const restaurantStore = upgradeDB.createObjectStore('restaurants', {
-    //     keyPath: 'id'
-    //   });
-    // });
+    const dbPromise = idb.open('restaurants', 1, (upgradeDB) => {
+      const restaurantStore = upgradeDB.createObjectStore('restaurants', {
+        keyPath: 'id'
+      });
+    });
 
-    // dbPromise.then(db => {
-    //     let tx = db.transaction('restaurants');
-    //     let store = tx.objectStore('restaurants');
-    //     return store.getAll();
-    //   })
-    //   .then(restaurants => {
-    //     if (restaurants && restaurants !== null) {
-    //       console.log('indexDB got data!');
-    //       // callback(null, restaurants);
-    //       console.log(restaurants)
-    //       const worker = new Worker('/js/idb-worker.js');
-    //       worker.postMessage(restaurants);
-    //       worker.onmessage = (e) => console.log(e.data);
-    //     }
-    //   })
+    dbPromise.then((db) => {
+      let tx = db.transaction('restaurants', 'readwrite');
+      let store = tx.objectStore('restaurants');
+      restaurants.forEach(restaurant => {
+        store.get(restaurant.id).then(idbRestaurant => {
+          if (JSON.stringify(restaurant) !== JSON.stringify(idbRestaurant)) {
+            store.put(restaurant)
+              .then((restaurant) => console.log('Worker IDB: Restaurant updated', restaurant));
+          }
+        });
+      });
+    });
   }
-
 
   /**
    * Fetch all restaurants.
@@ -78,16 +47,13 @@ class DBHelper {
     fetch(DBHelper.DATABASE_URL, {
         method: 'GET'
       })
-      .then(response => callback(response))
-      .then(response => response = response.json())
-      .then(res => console.log(res))
+      .then(res => res = res.json())
+      .then(res => this.insertRestaurantsToDB(res))
+      .then(res => callback(res))
       .catch(err => {
         // Fetch from indexdb incase network is not available
-        // DBHelper.getDATA().then(restaurants => {
-        //   console.log("Restaurants: ", restaurants)
-        //   callback(null, restaurants)
-        // })
-      });
+        DBHelper.fetchRestaurantsFromClient();
+      })
   }
 
   static fetchRestaurantsFromClient() {
@@ -101,31 +67,19 @@ class DBHelper {
         keyPath: 'id'
       });
     });
+
     dbPromise.then(db => {
-        console.log(db)
         let tx = db.transaction('restaurants');
         let store = tx.objectStore('restaurants');
         return store.getAll();
       })
       .then(restaurants => {
-        console.log('indexDB got data!');
-        callback(null, restaurants);
-        DBHelper.fetchRestaurants((restaurants) => {
+        if (restaurants && restaurants !== null) {
+          console.log('indexDB returned this data:');
           console.log(restaurants)
-          const worker = new Worker('js/idb-worker.js');
-          worker.postMessage(restaurants);
-          worker.onmessage = (e) => console.log(e.data);
-        });
-
+        }
       })
-    // return DBHelper.openDB().then(db => {
-    //   return db.transaction('restaurants')
-    //     .objectStore('restaurants').get(parseInt(id));
-    // }).then(restaurant => {
-    //   return restaurant;
-    // });
   }
-
 
   /**
    * Fetch a restaurant by its ID.
@@ -150,7 +104,6 @@ class DBHelper {
       return null;
     }
     const worker = new Worker('./idb-worker.js');
-    worker.postMessage()
     // return DBHelper.openDB().then(db => {
     //   return db.transaction('restaurants')
     //     .objectStore('restaurants').get(parseInt(id));
