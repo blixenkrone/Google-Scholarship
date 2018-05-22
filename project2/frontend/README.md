@@ -13,5 +13,3 @@
 
 ## Notes:
 - Included the audit-result.json and img.
-
-![Alt text](/audit.png?raw=true "Audit")
