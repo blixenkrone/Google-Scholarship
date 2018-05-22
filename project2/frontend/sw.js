@@ -1,4 +1,4 @@
-const cacheVersion = 'v6';
+const cacheVersion = 'v1';
 const cacheData = [
     './',
     'sw.js',
@@ -36,11 +36,10 @@ const cacheData = [
 //installing the service worker
 self.addEventListener('install', (event) => {
     console.log('Service Worker Installed');
-    event.waitUntil(
-        caches.open(cacheVersion).then((cache) => {
-            // console.log(cacheData);
+    event.waitUntil(caches.open(cacheVersion)
+        .then((cache) => {
             return cache.addAll(cacheData);
-        }).catch(err => console.log(err))
+        })
     )
 });
 
@@ -63,11 +62,18 @@ self.addEventListener('activate', (event) => {
 });
 
 self.addEventListener('fetch', (event) => {
-
-    event.respondWith(
-        caches.match(event.request).then((response) => {
-            if (response) return response;
-            return fetch(event.request);
+    console.log('Fetch SW')
+    event.respondWith(caches.match(event.request)
+        .then((response) => {
+            if (response && response !== undefined) return response;
+            return fetch(event.request)
+                .then(response => {
+                    const responseClone = response.clone();
+                    caches.open(cacheVersion)
+                        .then(cache => cache.put(event.request, responseClone))
+                        .catch(err => console.log(err))
+                    return response;
+                })
         }).catch(err => console.log(err))
     );
 });
