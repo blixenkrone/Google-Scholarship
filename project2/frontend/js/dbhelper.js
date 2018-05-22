@@ -43,17 +43,22 @@ class DBHelper {
   static fetchRestaurants(callback) {
     console.log(`Fetching restaurants as ${DBHelper.DATABASE_URL}`)
 
-      fetch(DBHelper.DATABASE_URL, {
-          method: 'GET'
-        })
-        .then(restaurants => restaurants = restaurants.json())
-        .then(restaurants => this.insertRestaurantsToDB(restaurants))
-        .then(restaurants => callback(null, restaurants))
-        .catch(err => {
-          console.log(err)
-          // Fetch from indexdb incase network is not available
-          DBHelper.fetchRestaurantsFromClient(callback)
-        })
+    fetch(DBHelper.DATABASE_URL, {
+        method: 'GET'
+      })
+      .then(restaurants => restaurants = restaurants.json())
+      .then(restaurants => {
+        console.log(restaurants)
+        this.insertRestaurantsToDB(restaurants)
+        if (restaurants) {
+          callback(null, restaurants)
+        }
+      })
+      .catch(err => {
+        console.log(err)
+        // Fetch from indexdb incase network is not available
+        DBHelper.fetchRestaurantsFromClient(callback)
+      })
   }
 
   static fetchRestaurantsFromClient(callback) {
@@ -93,7 +98,11 @@ class DBHelper {
         method: 'GET'
       })
       .then(response => response.json())
-      .then(restaurant => callback(null, restaurant))
+      .then(restaurant => {
+        if (restaurant) {
+          callback(null, restaurant)
+        }
+      })
       .catch(err => {
         console.log(err)
         // Fetch from indexdb incase network is not available
