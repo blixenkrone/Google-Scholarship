@@ -14,7 +14,7 @@ class DBHelper {
 
   static insertRestaurantsToDB(restaurants) {
     // If db exists or create one
-    console.log('inserting to db');
+    console.log('inserting to idb');
     console.log(restaurants);
 
     const dbPromise = idb.open('restaurants', 1, (upgradeDB) => {
@@ -27,10 +27,10 @@ class DBHelper {
       let tx = db.transaction('restaurants', 'readwrite');
       let store = tx.objectStore('restaurants');
       restaurants.forEach(restaurant => {
-        store.get(restaurant.id).then(idbRestaurant => {
-          if (JSON.stringify(restaurant) !== JSON.stringify(idbRestaurant)) {
+        store.get(restaurant.id).then(indexRestaurant => {
+          if (JSON.stringify(restaurant) !== JSON.stringify(indexRestaurant)) {
             store.put(restaurant)
-              .then((restaurant) => console.log('Worker IDB: Restaurant updated', restaurant));
+              .then((restaurant) => console.log('Worked IDB updated restaurant: ', restaurant));
           }
         });
       });
